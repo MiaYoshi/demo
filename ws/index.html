@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  输入姓名：<input type="text" id="uName">
+  输入消息：<input type="text" id="context">
+  <button id="btn"> 点击发送消息 </button>
+  <div id="list"></div>
+
+  <script>
+    const name = document.getElementById('uName')
+    const msg = document.getElementById('context')
+    const btn = document.getElementById('btn')
+    const list = document.getElementById('list')
+
+    const wss = new WebSocket('ws://localhost:8080')
+    wss.onopen = (...args) => {
+      console.log('连接成功');
+      console.log(args);
+    }
+    wss.onmessage = (e) => {
+      console.log(e.data);
+      const data = JSON.parse(e.data)
+      const [name, content] = data
+      list.innerHTML += `<div><b>${name}</b>: ${content}</div>`
+    }
+    btn.addEventListener('click', () => {
+      wss.send(JSON.stringify([name.value, msg.value]))
+    })
+  </script>
+</body>
+
+</html>
