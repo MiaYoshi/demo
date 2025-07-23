@@ -1,0 +1,37 @@
+{
+  "name": "webpack-demo",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack serve --open --config webpack.dev.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js"
+  },
+  "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@types/lodash-es": "^4.17.12",
+    "antd": "^5.26.6",
+    "lodash-es": "^4.17.21",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "compression-webpack-plugin": "^11.1.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^7.1.2",
+    "esbuild-loader": "^4.3.0",
+    "html-webpack-plugin": "^5.6.3",
+    "less": "^4.4.0",
+    "less-loader": "^12.3.0",
+    "postcss": "^8.5.6",
+    "postcss-loader": "^8.1.1",
+    "postcss-preset-env": "^10.2.4",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2",
+    "webpack-merge": "^6.0.1"
+  }
+}
