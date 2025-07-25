@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>文件上传</title>
+</head>
+
+<body>
+  <div id="upload-container">
+    <input type="file" id="file-input" multiple />
+    <button id="upload-btn">上传</button>
+    <div id="progress-container" style="display:none;">
+      <progress id="upload-progress" value="0" max="100"></progress>
+      <span id="progress-text">0%</span>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('file-input');
+    const uploadBtn = document.getElementById('upload-btn');
+    const progressContainer = document.getElementById('progress-container');
+    const uploadProgress = document.getElementById('upload-progress');
+    const progressText = document.getElementById('progress-text');
+    const resultDiv = document.getElementById('result');
+
+    uploadBtn.addEventListener('click', uploadFiles);
+
+    function uploadFiles() {
+      const files = fileInput.files;
+
+      if (files.length === 0) {
+        resultDiv.innerHTML = '<p style="color: red;">请选择至少一个文件</p>';
+        return;
+      }
+
+      // 显示进度条
+      progressContainer.style.display = 'block';
+
+      // 创建 FormData 对象
+      const formData = new FormData();
+
+      // 将所有文件添加到 FormData
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+      }
+
+      // 创建 XMLHttpRequest 对象
+      const xhr = new XMLHttpRequest();
+
+      // 监听上传进度
+      xhr.upload.addEventListener('progress', function (e) {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          uploadProgress.value = percentComplete;
+          progressText.textContent = Math.round(percentComplete) + '%';
+        }
+      });
+
+      // 监听上传完成事件
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          resultDiv.innerHTML = `<p style="color: green;">上传成功: ${response.message}</p>`;
+        } else {
+          resultDiv.innerHTML = `<p style="color: red;">上传失败: ${xhr.statusText}</p>`;
+        }
+        // 隐藏进度条
+        progressContainer.style.display = 'none';
+      });
+
+      // 监听错误事件
+      xhr.addEventListener('error', function () {
+        resultDiv.innerHTML = '<p style="color: red;">上传出错</p>';
+        progressContainer.style.display = 'none';
+      });
+
+      // 发送请求
+      xhr.open('POST', 'http://localhost:3000/upload', true);
+      xhr.send(formData);
+    }
+  </script>
+</body>
+
+</html>
